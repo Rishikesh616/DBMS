@@ -1,0 +1,130 @@
+Here’s the breakdown for SQL DML-based problem statements:
+
+---
+
+### Problem Statement
+**Write at least 10 SQL queries on a suitable database application using SQL DML statements.**
+
+---
+
+### Prerequisites
+1. **SQL Basics**: Understanding of SQL syntax and functions.
+2. **Knowledge of DML Statements**: Familiarity with SQL DML commands like `SELECT`, `INSERT`, `UPDATE`, and `DELETE`.
+3. **Database Schema**: Knowledge of the structure and relationships within the database tables.
+4. **SQL Environment**: Access to a database and a tool to execute SQL commands.
+
+---
+
+### Objectives
+1. **Learn DML Operations**: To perform data manipulation operations on a database.
+2. **Practice SQL Queries**: Understand how to retrieve, insert, update, and delete data in a database.
+3. **Use SQL Functions**: Apply aggregate functions, joins, and conditions to fetch meaningful information.
+
+---
+
+### Detailed Theory
+
+#### 1. **DML (Data Manipulation Language) in SQL**
+   - DML commands allow you to interact with and manipulate data within database tables.
+   - **Common DML Commands**:
+     - **SELECT**: Retrieves data from tables.
+     - **INSERT**: Adds new records to a table.
+     - **UPDATE**: Modifies existing records in a table.
+     - **DELETE**: Removes records from a table.
+
+#### 2. **Writing DML Queries**
+   - **Assume Tables**: Let’s assume a database with two tables:
+     - **Employees**: Contains employee details.
+     - **Departments**: Contains department details.
+
+---
+
+### Example Queries
+
+#### Table Structure
+**Employees**  
+| EmpID | FirstName | LastName | DepartmentID | Salary |
+|-------|-----------|----------|--------------|--------|
+| 1     | John      | Doe      | 101          | 60000  |
+| 2     | Jane      | Smith    | 102          | 55000  |
+| 3     | Tom       | Brown    | 101          | 75000  |
+
+**Departments**  
+| DeptID | DeptName         |
+|--------|-------------------|
+| 101    | HR               |
+| 102    | IT               |
+| 103    | Finance          |
+
+#### Sample DML Queries
+
+1. **Select All Employees**
+   ```sql
+   SELECT * FROM Employees;
+   ```
+
+2. **Select Employees with Salary Above 60000**
+   ```sql
+   SELECT FirstName, LastName, Salary 
+   FROM Employees 
+   WHERE Salary > 60000;
+   ```
+
+3. **Join Employees and Departments to Display Department Names**
+   ```sql
+   SELECT Employees.FirstName, Employees.LastName, Departments.DeptName 
+   FROM Employees 
+   JOIN Departments ON Employees.DepartmentID = Departments.DeptID;
+   ```
+
+4. **Insert a New Employee Record**
+   ```sql
+   INSERT INTO Employees (EmpID, FirstName, LastName, DepartmentID, Salary) 
+   VALUES (4, 'Alice', 'Johnson', 103, 62000);
+   ```
+
+5. **Update Salary of an Employee**
+   ```sql
+   UPDATE Employees 
+   SET Salary = 80000 
+   WHERE EmpID = 3;
+   ```
+
+6. **Delete an Employee Record**
+   ```sql
+   DELETE FROM Employees 
+   WHERE EmpID = 2;
+   ```
+
+7. **Calculate Average Salary in Each Department**
+   ```sql
+   SELECT DepartmentID, AVG(Salary) AS AvgSalary 
+   FROM Employees 
+   GROUP BY DepartmentID;
+   ```
+
+8. **Find Total Number of Employees in Each Department**
+   ```sql
+   SELECT Departments.DeptName, COUNT(Employees.EmpID) AS EmployeeCount 
+   FROM Employees 
+   JOIN Departments ON Employees.DepartmentID = Departments.DeptID 
+   GROUP BY Departments.DeptName;
+   ```
+
+9. **Select Employees with Salary Between 50000 and 70000**
+   ```sql
+   SELECT FirstName, LastName, Salary 
+   FROM Employees 
+   WHERE Salary BETWEEN 50000 AND 70000;
+   ```
+
+10. **Display Employees Sorted by Salary in Descending Order**
+    ```sql
+    SELECT FirstName, LastName, Salary 
+    FROM Employees 
+    ORDER BY Salary DESC;
+    ```
+
+---
+
+These queries cover basic data retrieval, joining tables, using aggregate functions, and applying conditions to filter data. They demonstrate various DML operations required for effective data manipulation in SQL.

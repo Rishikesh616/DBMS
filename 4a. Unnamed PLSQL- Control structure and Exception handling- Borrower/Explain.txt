@@ -1,0 +1,135 @@
+Apologies for the oversight! Here's a complete breakdown of **detailed theory concepts**, **objectives**, and **prerequisites** for your PL/SQL problem statement on control structures and exception handling:
+
+---
+
+### **Prerequisites**
+
+1. **Basic PL/SQL Concepts**:
+   - **PL/SQL Block Structure**: Understand the basic structure of a PL/SQL block, which consists of:
+     - **Declaration Section**: Declares variables, cursors, exceptions.
+     - **Execution Section**: Contains the main logic (SQL statements, control structures).
+     - **Exception Section**: Handles exceptions and errors.
+
+2. **Control Structures**:
+   - **IF-THEN-ELSE**: Conditional statements used to execute different actions based on conditions.
+   - **LOOPS**: Useful for repeating a set of statements multiple times.
+     - Types: `FOR LOOP`, `WHILE LOOP`, and `LOOP`.
+   - **CASE Expression**: A way to handle multiple conditions in a simplified manner.
+
+3. **Exception Handling**:
+   - **Predefined Exceptions**: Oracle provides built-in exceptions like `NO_DATA_FOUND`, `TOO_MANY_ROWS`, etc.
+   - **User-Defined Exceptions**: You can define custom exceptions to handle specific error scenarios.
+   - **Exception Block**: Section in PL/SQL where exceptions are handled.
+
+4. **Date Arithmetic**:
+   - Calculating the difference between dates using functions like `SYSDATE`, `TRUNC()`, and date subtraction.
+
+---
+
+### **Objectives**
+
+1. **Demonstrate Control Structures**: 
+   - Use `IF-THEN-ELSE`, `CASE`, and loop structures to solve the problem, based on conditions like fine calculation and book status update.
+
+2. **Exception Handling**: 
+   - Implement error handling using predefined and user-defined exceptions. Handle scenarios like:
+     - Book not found or already returned.
+     - Handling invalid user input.
+
+3. **Utilize SQL in PL/SQL**:
+   - Interact with the database tables (`Borrower`, `Fine`) using SQL inside the PL/SQL block.
+   - Insert fine details into the `Fine` table when applicable.
+   
+4. **User Input and Data Validation**:
+   - Accept user input for `Roll_no` and `NameofBook`.
+   - Use control structures to validate the conditions of the fine and status update.
+
+---
+
+### **Detailed Theory Concepts**
+
+1. **PL/SQL Block Structure**:
+   - A PL/SQL block is a fundamental unit of a program in Oracle. It consists of three sections:
+     - **Declaration Section**: Variables and exceptions are declared here.
+     - **Execution Section**: Main logic is written here (like querying the database, calculating fines, etc.).
+     - **Exception Section**: This section catches and handles exceptions that occur during execution.
+
+2. **Control Structures**:
+   - **IF-THEN-ELSE**: Used to check conditions and perform different actions based on the evaluation.
+     - **Syntax**:
+       ```sql
+       IF condition THEN
+           -- action if condition is true
+       ELSE
+           -- action if condition is false
+       END IF;
+       ```
+     - **Example**:
+       ```sql
+       IF v_DaysOverdue > 30 THEN
+           -- calculate fine for more than 30 days
+       ELSE
+           -- calculate fine for 15 to 30 days
+       END IF;
+       ```
+   - **LOOPS**: Used for repetitive execution of a block of statements. Useful for iterating through a result set or repeating an action until a condition is met.
+     - **Syntax**:
+       ```sql
+       LOOP
+           -- action
+       END LOOP;
+       ```
+   - **CASE Expression**: Similar to a `switch` statement in other programming languages, it allows you to handle multiple conditions without using multiple `IF-THEN` statements.
+     - **Syntax**:
+       ```sql
+       CASE 
+           WHEN condition1 THEN result1
+           WHEN condition2 THEN result2
+           ELSE default_result
+       END CASE;
+       ```
+
+3. **Exception Handling**:
+   - **Predefined Exceptions**: Oracle provides several built-in exceptions like `NO_DATA_FOUND`, `TOO_MANY_ROWS`, and `ZERO_DIVIDE`. These are raised automatically when certain conditions occur.
+     - **Example**: 
+       ```sql
+       WHEN NO_DATA_FOUND THEN
+           DBMS_OUTPUT.PUT_LINE('No records found');
+       ```
+   - **User-Defined Exceptions**: You can create custom exceptions to handle specific errors that are not predefined by Oracle.
+     - **Syntax**:
+       ```sql
+       ex_BookNotFound EXCEPTION;
+       RAISE ex_BookNotFound;
+       ```
+   - **Exception Handling Block**: The `EXCEPTION` section is where you define how the exceptions will be handled.
+     - **Syntax**:
+       ```sql
+       BEGIN
+           -- main logic
+       EXCEPTION
+           WHEN exception_name THEN
+               -- handle exception
+           WHEN OTHERS THEN
+               -- handle unexpected exceptions
+       END;
+       ```
+
+4. **Date Arithmetic**:
+   - Dates in Oracle are stored as `DATE` data types. You can perform date arithmetic by subtracting two dates, which returns the number of days between them.
+     - **Example**:
+       ```sql
+       v_DaysOverdue := TRUNC(SYSDATE - v_DateofIssue);
+       ```
+
+---
+
+### **Summary**
+
+By understanding the theory of control structures and exception handling, you will be able to:
+
+- **Design a PL/SQL block** to manage different book statuses, fines, and user input.
+- **Use control structures** like `IF-THEN-ELSE` and loops to handle conditions like fine calculation.
+- **Employ exception handling** to manage errors like missing records, invalid data, and book status inconsistencies.
+  
+These concepts and syntax examples should give you a solid foundation for solving the problem and preparing for your practical exam.

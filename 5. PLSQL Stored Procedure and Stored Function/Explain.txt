@@ -1,0 +1,138 @@
+### **Prerequisites:**
+
+1. **PL/SQL Stored Procedure and Function**:
+   - **Stored Procedure**: A stored procedure is a named PL/SQL block that performs a specific task. It can accept parameters and return results, though it does not necessarily return a value.
+   - **Stored Function**: Similar to a stored procedure, but it returns a value (like a calculation result).
+   - **Parameters in Procedures and Functions**: Understand how to pass parameters (IN, OUT, IN OUT).
+
+2. **PL/SQL Control Structures**: The `IF-THEN-ELSE` control structure is crucial for categorizing students based on their marks.
+
+3. **Tables**:
+   - **Stud_Marks (name, total_marks)**: This table stores the student's name and total marks.
+   - **Result (Roll, Name, Class)**: This table stores the student’s roll number, name, and assigned class.
+
+4. **SQL Insert and Update Statements**: You need to know how to insert data into a table or update existing records.
+
+---
+
+### **Objectives:**
+
+1. **Create a Stored Function** (`proc_Grade`) that categorizes students based on their marks:
+   - Marks `<= 1500 and >= 990`: "Distinction"
+   - Marks `<= 989 and >= 900`: "First Class"
+   - Marks `<= 899 and >= 825`: "Higher Second Class"
+   
+2. **Create a PL/SQL Block** that uses the stored function to assign grades to students and insert results into the `Result` table.
+
+---
+
+### **Detailed Theory Concepts:**
+
+1. **PL/SQL Function**:
+   - A function in PL/SQL can return a single value (like a grade based on marks).
+   - **Syntax**:
+     ```sql
+     CREATE OR REPLACE FUNCTION function_name (parameter1 IN datatype) RETURN datatype
+     IS
+     BEGIN
+         -- Function logic
+         RETURN value;
+     END;
+     ```
+
+2. **PL/SQL Stored Procedure**:
+   - A procedure is a PL/SQL block that performs an action but doesn’t return a value.
+   - **Syntax**:
+     ```sql
+     CREATE OR REPLACE PROCEDURE procedure_name (parameter1 IN datatype, parameter2 OUT datatype) 
+     IS
+     BEGIN
+         -- Procedure logic
+     END;
+     ```
+
+3. **Control Structures**:
+   - **IF-THEN-ELSE** is used to determine the category based on the given marks range.
+     - **Syntax**:
+       ```sql
+       IF condition THEN
+           -- action
+       ELSE
+           -- other actions
+       END IF;
+       ```
+
+4. **SQL Insert/Update**:
+   - You’ll use `INSERT INTO` or `UPDATE` statements to store or modify data in the `Result` table.
+     - **Syntax**:
+       ```sql
+       INSERT INTO Result (Roll, Name, Class) VALUES (roll_value, name_value, class_value);
+       ```
+
+---
+
+### **PL/SQL Stored Function Syntax and Example**:
+
+#### **Step 1: Create the Stored Function (`proc_Grade`)**:
+This function takes total marks as input and returns the category (grade).
+
+```sql
+CREATE OR REPLACE FUNCTION proc_Grade (total_marks IN NUMBER) RETURN VARCHAR2 IS
+    grade VARCHAR2(20);
+BEGIN
+    IF total_marks >= 990 AND total_marks <= 1500 THEN
+        grade := 'Distinction';
+    ELSIF total_marks >= 900 AND total_marks <= 989 THEN
+        grade := 'First Class';
+    ELSIF total_marks >= 825 AND total_marks <= 899 THEN
+        grade := 'Higher Second Class';
+    ELSE
+        grade := 'No Class'; -- This can be an error message or no category if marks are less than 825.
+    END IF;
+    RETURN grade;
+END;
+/
+```
+
+- **Explanation**:
+  - The function `proc_Grade` accepts `total_marks` as input and returns a grade as a string.
+  - The function checks the marks range using `IF-THEN-ELSE` and returns the appropriate category.
+
+---
+
+#### **Step 2: Create the PL/SQL Block to Use the Stored Function**:
+This block fetches student marks from the `Stud_Marks` table, calculates the grade using the `proc_Grade` function, and stores the result in the `Result` table.
+
+```sql
+DECLARE
+    v_grade VARCHAR2(20);
+BEGIN
+    -- Loop through each student in Stud_Marks table
+    FOR rec IN (SELECT name, total_marks FROM Stud_Marks) LOOP
+        -- Call proc_Grade function to get grade for each student
+        v_grade := proc_Grade(rec.total_marks);
+
+        -- Insert the student result into Result table
+        INSERT INTO Result (Roll, Name, Class) 
+        VALUES (rec.name, rec.total_marks, v_grade);
+
+        -- Optional: Output for confirmation
+        DBMS_OUTPUT.PUT_LINE('Name: ' || rec.name || ', Marks: ' || rec.total_marks || ', Grade: ' || v_grade);
+    END LOOP;
+END;
+/
+```
+
+- **Explanation**:
+  - The PL/SQL block uses a cursor (`FOR` loop) to fetch student names and total marks from the `Stud_Marks` table.
+  - The `proc_Grade` function is called for each student's marks to determine their grade.
+  - The result is inserted into the `Result` table with the student's name, marks, and corresponding grade.
+
+---
+
+### **Summary**:
+- **Stored Function (`proc_Grade`)**: Classifies students into categories based on marks and returns the grade.
+- **PL/SQL Block**: Loops through the students, calls the function, and inserts the result into the `Result` table.
+- **Exception Handling**: You could add exception handling to deal with unexpected issues (like invalid marks or issues with the `Result` table).
+
+This approach demonstrates the use of both **stored procedures/functions** and **PL/SQL control structures**.

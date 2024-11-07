@@ -1,0 +1,26 @@
+1. Open eclipse IDE
+2. create a new java project and name it.
+3. Now we have to create 3 java classes in the src of the our java project.
+4. first right click on src and create a new class for connection. name package (use letters lowercases) and name class (like conn).
+5. Open the it and clear code lines except package line (check class name) then paste the connection code.
+6. change the class name to your given class name. and save this
+7. Now Open MySQL
+8. Run MySQL --version then MySQL -u root -p then pass: root then show databases.
+9. Here you need to search a database which is having a table with preferably 3 columns and more than 2 or 3 rows of data. If you don't find it then create one which does have.
+10. Come Back to Eclipse' connection class.
+11. Replace the DBMS with your selected database in public static final String DBURL = "jdbc:mysql://localhost:3306/DBMS"; and in comments too. then save this.
+12. Then right click on the src of your java project and select build path > configure build path.. > libraries > Classpath > Add External Jars.. Then locate the jar file and select save and apply. (You can either download jar file or its in the folder)
+13. Run the Code.
+14. If Having Errors right click on the errors and try pressing import or something then it will work.
+15. Again run till connection is established.
+16. right click on the src again and create new class for insert. Give same package name and anything for class name.
+17. Open the it and clear code lines except package line (check class name) then paste the insert code.
+18. Change the database name, table name, columns if necessary, and values to insert if necessary in the code.
+19. Run the code if having errors same as above till value is inserted.
+20. To check open the sql window and type select * from table_name to see the inserted value.
+21. right click on the src again and create new class for delete. Give same package name and anything for class name.
+22. Open the it and clear code lines except package line (check class name) then paste the delete code.
+23. Change the database name, table name, columns if necessary, and values to insert if necessary in the code.
+24. Run the code if having errors same as above till value is deleted.
+25. To check open the sql window and type select * from table_name to see the if value is deleted.
+26. Finally DONE.

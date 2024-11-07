@@ -1,0 +1,3 @@
+ SQL Queries: 
+b. Write at least 10 SQL queries on the suitable database application using SQL DML 
+statements.

@@ -1,0 +1,8 @@
+1. Open cmd
+2. mySQL --version
+3. MySQL -u root -p //(root is username)
+4. password: root //(if root isn't the password ask supervisor)
+5. a. check if the student database does exist. If it DOES NOT exist paste the entire code.
+   b. If student database DOES exist create another database like student1 or student2 etc, type- USE new_database; (replace new_database with the name of your newly modified database). Then paste the entire code AFTER use student;
+
+NOTE: If you want to change details like rows, columns etc manually copy paste each line and modify accordingly.

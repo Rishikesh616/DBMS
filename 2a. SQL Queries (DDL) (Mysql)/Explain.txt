@@ -1,0 +1,91 @@
+---
+
+### Problem Statement
+**Design and Develop SQL DDL statements which demonstrate the use of SQL objects such as Table, View, Index, Sequence, Synonym, and different constraints.**
+
+---
+
+### Prerequisites
+1. **Basic SQL Syntax**: Understanding of SQL keywords, structure, and syntax.
+2. **Knowledge of SQL Data Types**: Familiarity with data types like `VARCHAR`, `INT`, `DATE`, etc.
+3. **Understanding SQL Objects**: Familiarity with tables, views, indexes, sequences, synonyms, and constraints.
+4. **SQL Environment Setup**: Access to an SQL database and tools to execute DDL commands.
+
+---
+
+### Objectives
+1. **Learn DDL Commands**: To understand how to define and structure SQL objects in a database.
+2. **Utilize SQL Constraints**: Demonstrate different constraints like primary keys, foreign keys, unique, not null, and check constraints.
+3. **Understand SQL Objects**: Gain practical knowledge of views, indexes, sequences, and synonyms in SQL.
+
+---
+
+### Detailed Theory
+
+#### 1. **DDL (Data Definition Language) in SQL**
+   - DDL is a subset of SQL commands used to define, modify, and manage database objects like tables, indexes, views, sequences, and synonyms.
+   - DDL commands include `CREATE`, `ALTER`, and `DROP`.
+
+#### 2. **SQL Objects Overview**
+   - **Table**: Basic storage structure in SQL, consisting of rows and columns to hold data.
+   - **View**: A virtual table based on the result of a `SELECT` query; provides a way to simplify complex queries.
+   - **Index**: A database object to improve the speed of data retrieval operations by maintaining a sorted order of selected columns.
+   - **Sequence**: Generates unique numeric values, often used for primary key generation.
+   - **Synonym**: An alias for a database object, providing a simplified or alternative name.
+
+#### 3. **Creating SQL Objects with DDL Statements**
+
+   - **Creating a Table**: Define tables with columns and their data types, and apply constraints as needed.
+     ```sql
+     CREATE TABLE Employees (
+         EmpID INT PRIMARY KEY,
+         FirstName VARCHAR(50) NOT NULL,
+         LastName VARCHAR(50),
+         DepartmentID INT,
+         Salary DECIMAL(10, 2),
+         CONSTRAINT fk_dept FOREIGN KEY (DepartmentID) REFERENCES Departments(DeptID)
+     );
+     ```
+     - **Primary Key**: Ensures uniqueness for `EmpID`.
+     - **Foreign Key**: Links `DepartmentID` in `Employees` to `DeptID` in `Departments`.
+
+   - **Constraints**: Constraints enforce rules on data. Here are a few commonly used constraints:
+     - **Primary Key**: Uniquely identifies each row in a table.
+     - **Foreign Key**: Maintains referential integrity by linking tables.
+     - **Unique**: Ensures all values in a column are distinct.
+     - **Not Null**: Prevents null values in a column.
+     - **Check**: Enforces specific conditions on data values.
+     
+   - **Creating a View**: A view is a saved query that simplifies data access for complex queries.
+     ```sql
+     CREATE VIEW EmployeeDetails AS
+     SELECT EmpID, FirstName, LastName, DepartmentID
+     FROM Employees
+     WHERE Salary > 50000;
+     ```
+
+   - **Creating an Index**: Indexes improve data retrieval speed, especially in large tables.
+     ```sql
+     CREATE INDEX idx_salary ON Employees (Salary);
+     ```
+
+   - **Creating a Sequence**: Sequences are used to generate sequential numbers.
+     ```sql
+     CREATE SEQUENCE emp_sequence START WITH 1 INCREMENT BY 1;
+     ```
+
+   - **Creating a Synonym**: A synonym provides an alternative name for an object, useful in simplifying queries.
+     ```sql
+     CREATE SYNONYM EmpTable FOR Employees;
+     ```
+
+#### 4. **SQL Constraints Explained**
+   - **Primary Key Constraint**: Uniquely identifies each record; often auto-incremented by a sequence.
+   - **Foreign Key Constraint**: Ensures referential integrity by linking columns between tables.
+   - **Unique Constraint**: Enforces uniqueness for a column's values.
+   - **Check Constraint**: Limits values based on a condition (e.g., `Salary > 0`).
+   - **Not Null Constraint**: Prevents null values, ensuring data presence.
+
+---
+
+This approach to using SQL DDL commands will demonstrate proficiency in setting up a database structure with proper constraints and utilities for efficiency and data integrity.

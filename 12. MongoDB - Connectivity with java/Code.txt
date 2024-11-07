@@ -1,0 +1,61 @@
+Import java.net.unknownHostException;
+Import java.util.data;
+Import com.mongodb.BasicDBObject;
+Import com.mongodb.DB;
+Import com.mongodb.DBCollection;
+Import com.mongodb.DBCursor;
+Import com.mongodb.MongoClient;
+Import com.mongodb.MongoException;
+Public class Sample
+{
+public static void main(String[] args){
+
+try{
+/******************Connect to MongoDB*******?
+//Since 2.10.0 use MongoClient
+MongoClient mongo=new MongoClient(“localhost”,27017);
+
+/*****Get database*****/
+//if database doesn’t exists MongoDB will create it for you
+DB db=mongo.getDB(“testdb”);
+/**********Get collection/table from ‘testdb’******/
+//DBCollection table=db.getCollection(“user”);
+
+/*********Insert******/
+//create a document to store key and value
+BasicDBObject document=new BasicDBObject();
+document.put(“name”,”Rahul”);
+document.put(“age”,24);
+document.put(“createdDate”,newDate());
+table.insert(document);
+/*********Find and display********/
+BasicDBObject searchQuery=new BasicDBObject();
+searchQuery.put(“name”,”sahil”);
+DBCursor cursor=table.find(searchQuery);
+While(Cursor.hasNEXT(){
+System.out.println(cursor.next());
+}
+
+/****************Update***********************8/
+// search document where name=’’rahul’’ and update it with new values
+BasicDBObject query=new BasicObject();
+newDocument.put(“name”,”ajay”);
+BasicObject updateObj=new BasicObject();
+updateObj.put(“$set”,newDocument);
+table.update(query,updateObj);
+
+/******** Find and display********/
+BasicDBObject().append(“name”ajay”);
+DBCursor cursor2=table.find(searchQuery2);
+while(cursor2.hasNext()){
+
+}
+/******Done*****/
+System.out.println(“Done”);
+}
+Catch(UnknownHostException e){
+e.printStackTrace();
+}catch(MongoException e){
+}
+}
+}

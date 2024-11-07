@@ -1,0 +1,102 @@
+### **Prerequisites:**
+
+1. **PL/SQL Block Structure**: Understand the basic components of a PL/SQL block, which includes:
+   - **Declaration Section**: Variables are declared here.
+   - **Execution Section**: Contains SQL statements and logic (e.g., for calculating area).
+   - **Exception Section**: Handles exceptions or errors during execution.
+
+2. **Control Structures**:
+   - **LOOP**: To iterate over a range of values (e.g., for radius 5 to 9).
+   - **IF-THEN-ELSE**: If needed, to handle conditions like invalid data.
+
+3. **SQL Insert Operation**: Know how to insert calculated values into a table.
+
+4. **Basic Formula for Area of a Circle**:
+   - Area = π * radius². (Use `3.14` for π)
+
+---
+
+### **Objectives:**
+
+1. **Loop through Radius Values**: Use a `FOR` loop to iterate from radius 5 to 9.
+2. **Calculate Area**: Calculate the area of the circle using the formula.
+3. **Insert Data**: Store the radius and corresponding area into the `areas` table.
+4. **Exception Handling**: Handle potential errors like invalid data or issues with the table insertion.
+
+---
+
+### **Detailed Theory Concepts:**
+
+1. **PL/SQL Control Structures**:
+   - **LOOP**: The `FOR` loop is ideal for iterating over a range of values. In this case, it will loop through radius values from 5 to 9.
+     - **Syntax**:
+       ```sql
+       FOR variable IN [start_value..end_value] LOOP
+           -- statements
+       END LOOP;
+       ```
+
+2. **Inserting Data**:
+   - Inserting data into a table in PL/SQL is done using the `INSERT INTO` SQL statement.
+     - **Syntax**:
+       ```sql
+       INSERT INTO table_name (column1, column2)
+       VALUES (value1, value2);
+       ```
+
+3. **Exception Handling**:
+   - **Predefined Exception**: You might use `NO_DATA_FOUND`, `TOO_MANY_ROWS` for any issues related to data retrieval or insertion failures.
+   - **User-defined Exceptions**: Useful if you expect specific error conditions, like an invalid radius value.
+   - **Syntax**:
+     ```sql
+     EXCEPTION
+         WHEN exception_name THEN
+             -- handle exception
+     ```
+
+---
+
+### **PL/SQL Code Block Syntax and Example**:
+
+#### **Syntax**:
+
+```sql
+DECLARE
+    v_radius   NUMBER;
+    v_area     NUMBER;
+BEGIN
+    -- Loop for radius values from 5 to 9
+    FOR v_radius IN 5..9 LOOP
+        -- Calculate area of circle (Area = π * radius^2)
+        v_area := 3.14 * v_radius * v_radius;
+        
+        -- Insert radius and area into the areas table
+        INSERT INTO areas (radius, area) VALUES (v_radius, v_area);
+        
+        -- Optional: Output for confirmation
+        DBMS_OUTPUT.PUT_LINE('Radius: ' || v_radius || ', Area: ' || v_area);
+    END LOOP;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Handle unexpected errors
+        DBMS_OUTPUT.PUT_LINE('An error occurred: ' || SQLERRM);
+END;
+/
+```
+
+---
+
+### **Explanation**:
+
+1. **Declaration Section**:
+   - Two variables, `v_radius` and `v_area`, are declared to store the radius and calculated area.
+
+2. **Execution Section**:
+   - The `FOR` loop runs from 5 to 9 for `v_radius`.
+   - For each radius value, the area is calculated using the formula `Area = π * radius²`.
+   - The calculated radius and area are inserted into the `areas` table using the `INSERT INTO` statement.
+
+3. **Exception Section**:
+   - The `WHEN OTHERS` exception handler captures any unforeseen errors, like issues with the insert operation, and outputs the error message.
+
+This code handles the logic for calculating and inserting the area of a circle for different radius values, as well as the exception handling to manage potential errors.

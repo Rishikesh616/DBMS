@@ -1,0 +1,123 @@
+### **Prerequisites:**
+
+1. **PL/SQL Cursors**:
+   - **Implicit Cursor**: Automatically created by Oracle when a SQL statement (like `SELECT`, `INSERT`, `UPDATE`, `DELETE`) is executed.
+   - **Explicit Cursor**: Defined by the programmer for a specific SQL query.
+   - **Cursor FOR Loop**: A simplified way of working with cursors.
+   - **Parameterized Cursor**: A cursor that accepts parameters to filter results dynamically.
+
+2. **SQL `MERGE` Operation**:
+   - Used to combine data from two tables. It can insert, update, or delete records based on conditions.
+
+3. **Tables**:
+   - **N_RollCall**: The new data table.
+   - **O_RollCall**: The existing data table.
+
+4. **SQL Syntax**:
+   - **INSERT INTO**: Adds new records to a table.
+   - **EXISTS**: Used to check if a record already exists in another table.
+   - **Cursor Declaration**: A cursor can be parameterized to allow dynamic querying of the database.
+
+---
+
+### **Objectives:**
+
+1. **Define a Parameterized Cursor**: The cursor will accept a parameter to filter records dynamically.
+2. **Merge Data**: The PL/SQL block should check for the existence of data in the second table (`O_RollCall`) and only insert records from `N_RollCall` that do not exist in `O_RollCall`.
+3. **Skip Existing Data**: If the data in the `N_RollCall` table already exists in `O_RollCall`, it should not be inserted again.
+
+---
+
+### **Detailed Theory Concepts:**
+
+1. **Parameterized Cursors**:
+   - A **parameterized cursor** allows you to pass arguments to the cursor at runtime. This enables dynamic querying based on parameters.
+   - **Syntax**:
+     ```sql
+     CURSOR cursor_name (parameter1 datatype, parameter2 datatype) IS
+         SELECT column1, column2 FROM table_name WHERE column1 = parameter1;
+     ```
+
+2. **Cursor FOR Loop**:
+   - A simplified loop structure to fetch records from a cursor without explicitly opening or closing the cursor.
+   - **Syntax**:
+     ```sql
+     FOR record IN cursor_name LOOP
+         -- Processing logic
+     END LOOP;
+     ```
+
+3. **Merge Operation**:
+   - The `MERGE` statement allows you to merge data between two tables based on specific conditions. It can be used to insert new records or update existing ones.
+   - **Syntax**:
+     ```sql
+     MERGE INTO target_table USING source_table
+     ON (target_table.column = source_table.column)
+     WHEN MATCHED THEN
+         -- Update statement
+     WHEN NOT MATCHED THEN
+         -- Insert statement
+     ```
+
+4. **EXISTS**: 
+   - The `EXISTS` function is used to check if a record already exists in a subquery.
+   - **Syntax**:
+     ```sql
+     IF NOT EXISTS (SELECT 1 FROM table_name WHERE condition) THEN
+         -- Insert statement
+     END IF;
+     ```
+
+---
+
+### **PL/SQL Code Block Syntax and Example**:
+
+#### **Step 1: Define the Parameterized Cursor**:
+```sql
+DECLARE
+    -- Define a parameterized cursor to fetch data from N_RollCall
+    CURSOR c_rollcall (p_status VARCHAR2) IS
+        SELECT * FROM N_RollCall WHERE status = p_status;
+        
+    v_id NUMBER;
+    v_name VARCHAR2(50);
+    v_status VARCHAR2(20);
+BEGIN
+    -- Open the cursor for a specific status value (e.g., 'active')
+    FOR rec IN c_rollcall('active') LOOP
+        -- Fetch values from the cursor
+        v_id := rec.id;
+        v_name := rec.name;
+        v_status := rec.status;
+
+        -- Check if the data already exists in O_RollCall
+        IF NOT EXISTS (SELECT 1 FROM O_RollCall WHERE id = v_id AND name = v_name) THEN
+            -- Insert new data into O_RollCall if not already present
+            INSERT INTO O_RollCall (id, name, status) 
+            VALUES (v_id, v_name, v_status);
+        END IF;
+    END LOOP;
+END;
+/
+```
+
+---
+
+### **Explanation**:
+
+1. **Parameterized Cursor**:
+   - The cursor `c_rollcall` accepts a parameter `p_status` and fetches rows from `N_RollCall` where the status matches the provided value.
+
+2. **Cursor FOR Loop**:
+   - The loop fetches each record returned by the cursor. The loop iterates over records from the `N_RollCall` table where the status is `'active'`.
+
+3. **EXISTS Condition**:
+   - Before inserting a record into `O_RollCall`, the `EXISTS` condition checks if a record with the same `id` and `name` already exists in the `O_RollCall` table.
+   - If the record does not exist, it is inserted into the `O_RollCall` table.
+
+---
+
+### **Summary**:
+- **Parameterized Cursor**: A cursor that dynamically fetches data based on input parameters.
+- **Merge Operation**: Data is merged between two tables (`N_RollCall` and `O_RollCall`), skipping the insertion of duplicate records.
+- **EXISTS**: Prevents duplicate data by checking if a record already exists in the target table before inserting it.

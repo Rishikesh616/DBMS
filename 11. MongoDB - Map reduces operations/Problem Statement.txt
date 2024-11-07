@@ -1,0 +1,4 @@
+Group B: NoSQL Databases 
+
+MongoDB - Map reduces operations: 
+Implement Map reduces operation with suitable example using MongoDB. 

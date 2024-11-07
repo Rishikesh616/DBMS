@@ -1,0 +1,4 @@
+1. Eclipse IDE
+2. JDK intsalled and set up
+3. jar file
+4. MySQL setup with a database already having a table with preferably 3 columns and more than 2 or 3 rows of data.

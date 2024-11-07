@@ -1,0 +1,117 @@
+### **Prerequisites**:
+
+1. **Database Triggers**:
+   - **Row-Level Trigger**: A trigger that fires once for each row affected by the triggering event.
+   - **Statement-Level Trigger**: A trigger that fires once for each SQL statement, regardless of how many rows are affected.
+   - **Before Trigger**: Fires before an SQL statement is executed, allowing you to modify the data before it's committed.
+   - **After Trigger**: Fires after an SQL statement is executed, typically used for auditing purposes or enforcing referential integrity.
+
+2. **SQL Syntax for Triggers**:
+   - **CREATE TRIGGER**: Used to define a trigger.
+   - **FOR EACH ROW**: Indicates that the trigger is row-level.
+   - **INSERT INTO**: Used to insert records into a table (such as `Library_Audit`).
+
+3. **Tables**:
+   - **Library**: The main table where records are stored.
+   - **Library_Audit**: A table to store the old values of updated or deleted records for audit purposes.
+
+---
+
+### **Objectives**:
+
+1. **Track Updates and Deletions**: The trigger should track updates and deletions on the `Library` table.
+2. **Store Old Values**: The old values (before update or deletion) should be stored in the `Library_Audit` table.
+3. **Audit Records**: The system should maintain an audit trail for the `Library` table to monitor any changes or deletions.
+
+---
+
+### **Detailed Theory Concepts**:
+
+1. **Row-Level Triggers**:
+   - Row-level triggers are executed for each row affected by the DML statement (INSERT, UPDATE, DELETE).
+   - Useful when you need to track or validate individual row changes.
+
+2. **Statement-Level Triggers**:
+   - Statement-level triggers are executed once for the entire SQL statement, regardless of the number of rows affected.
+   - They are often used when you want to enforce rules at the statement level or perform actions after the statement execution.
+
+3. **Before Triggers**:
+   - Before triggers execute before the DML statement is applied to the database.
+   - Commonly used for validation, default value assignment, or setting up conditions.
+
+4. **After Triggers**:
+   - After triggers execute after the DML statement has been applied to the database.
+   - Useful for audit logging, enforcing business rules after data manipulation, or triggering other processes after the change.
+
+5. **Using OLD and NEW Values**:
+   - **OLD**: Refers to the values of the record before the DML operation (used in `UPDATE` and `DELETE` triggers).
+   - **NEW**: Refers to the values of the record after the DML operation (used in `INSERT` and `UPDATE` triggers).
+
+---
+
+### **PL/SQL Code Block Syntax and Example**:
+
+#### **Step 1: Define the `Library_Audit` Table** (If not already created):
+
+```sql
+CREATE TABLE Library_Audit (
+    audit_id NUMBER PRIMARY KEY,
+    action VARCHAR2(10),  -- 'UPDATE' or 'DELETE'
+    book_id NUMBER,
+    book_name VARCHAR2(255),
+    author VARCHAR2(255),
+    old_status VARCHAR2(20),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **Step 2: Create the Trigger**:
+
+```sql
+CREATE OR REPLACE TRIGGER trg_library_audit
+AFTER UPDATE OR DELETE ON Library
+FOR EACH ROW
+DECLARE
+    action_type VARCHAR2(10);
+BEGIN
+    -- Determine action type (UPDATE or DELETE)
+    IF DELETING THEN
+        action_type := 'DELETE';
+        -- Insert old values for a deleted record into Library_Audit
+        INSERT INTO Library_Audit (action, book_id, book_name, author, old_status)
+        VALUES (action_type, :OLD.book_id, :OLD.book_name, :OLD.author, :OLD.status);
+    ELSIF UPDATING THEN
+        action_type := 'UPDATE';
+        -- Insert old values for an updated record into Library_Audit
+        INSERT INTO Library_Audit (action, book_id, book_name, author, old_status)
+        VALUES (action_type, :OLD.book_id, :OLD.book_name, :OLD.author, :OLD.status);
+    END IF;
+END;
+/
+```
+
+---
+
+### **Explanation**:
+
+1. **Trigger Definition**:
+   - `AFTER UPDATE OR DELETE ON Library`: This trigger fires after an `UPDATE` or `DELETE` statement on the `Library` table.
+   - `FOR EACH ROW`: Specifies that this is a row-level trigger, and it will fire once for each row affected by the operation.
+   - **OLD Values**: The `:OLD` prefix is used to refer to the values of the record before it was updated or deleted.
+   - **Audit Insertion**: If the record is deleted or updated, the old values are inserted into the `Library_Audit` table, along with the action type (`'UPDATE'` or `'DELETE'`), to maintain an audit trail.
+
+2. **Trigger Logic**:
+   - If the operation is a **DELETE**, the trigger inserts the old record into the audit table with the action type set to `'DELETE'`.
+   - If the operation is an **UPDATE**, the trigger inserts the old values (before the update) into the `Library_Audit` table with the action type set to `'UPDATE'`.
+
+3. **Audit Trail**:
+   - The `Library_Audit` table keeps a record of all updates and deletions from the `Library` table. This table includes the action (`UPDATE` or `DELETE`), the `book_id`, the `book_name`, the `author`, the `old_status`, and the timestamp of the operation.
+
+---
+
+### **Summary**:
+
+- **Triggers** help automate actions like maintaining an audit trail when data is changed in a table.
+- **Row-Level Triggers** are used to perform operations on a per-row basis, tracking the exact changes made.
+- **After Triggers** execute after the DML statement has been processed, useful for auditing purposes.
+- This trigger records old data for updates and deletions, ensuring that all changes to the `Library` table are logged in the `Library_Audit` table.

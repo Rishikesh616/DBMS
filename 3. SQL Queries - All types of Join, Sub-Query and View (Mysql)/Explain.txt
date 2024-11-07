@@ -1,0 +1,141 @@
+Here’s a detailed breakdown to cover joins, sub-queries, and views for your SQL DML problem statement:
+
+---
+
+### Problem Statement
+**Write at least 10 SQL queries for a suitable database application using SQL DML statements, including all types of joins, sub-queries, and views.**
+
+---
+
+### Prerequisites
+1. **Basic SQL Knowledge**: Familiarity with SQL syntax and structure.
+2. **SQL Joins**: Understanding of different types of joins, such as `INNER JOIN`, `LEFT JOIN`, `RIGHT JOIN`, and `FULL OUTER JOIN`.
+3. **Sub-Queries**: Knowledge of using nested queries within a primary query.
+4. **Views**: Understanding of how views work and how they simplify complex queries.
+
+---
+
+### Objectives
+1. **Demonstrate All Join Types**: Learn how to link related data from multiple tables.
+2. **Use Sub-Queries**: Fetch filtered data using sub-queries within main queries.
+3. **Create and Query Views**: Simplify query operations by using views to store complex SELECT statements.
+
+---
+
+### Detailed Theory
+
+#### 1. **Joins in SQL**
+   - Joins are used to combine records from two or more tables based on a related column between them.
+   - **Types of Joins**:
+     - **INNER JOIN**: Returns rows with matching values in both tables.
+     - **LEFT JOIN**: Returns all rows from the left table and matched rows from the right table.
+     - **RIGHT JOIN**: Returns all rows from the right table and matched rows from the left table.
+     - **FULL OUTER JOIN**: Returns all rows when there is a match in one of the tables.
+
+#### 2. **Sub-Queries in SQL**
+   - A sub-query, or nested query, is a query within another query.
+   - Sub-queries are often used in conditions (e.g., `WHERE`, `HAVING`) to retrieve filtered data.
+
+#### 3. **Views in SQL**
+   - A view is a virtual table created by a query. It simplifies complex queries and can enhance data security by limiting data access.
+
+---
+
+### Sample Database Structure
+
+**Employees**  
+| EmpID | FirstName | LastName | DepartmentID | Salary |
+|-------|-----------|----------|--------------|--------|
+| 1     | John      | Doe      | 101          | 60000  |
+| 2     | Jane      | Smith    | 102          | 55000  |
+| 3     | Tom       | Brown    | 101          | 75000  |
+
+**Departments**  
+| DeptID | DeptName         |
+|--------|-------------------|
+| 101    | HR               |
+| 102    | IT               |
+| 103    | Finance          |
+
+---
+
+### SQL DML Queries Using Joins, Sub-Queries, and Views
+
+1. **Inner Join: Display Employees with Their Department Names**
+   ```sql
+   SELECT Employees.FirstName, Employees.LastName, Departments.DeptName
+   FROM Employees
+   INNER JOIN Departments ON Employees.DepartmentID = Departments.DeptID;
+   ```
+
+2. **Left Join: Show All Departments and Their Employees (Including Departments with No Employees)**
+   ```sql
+   SELECT Departments.DeptName, Employees.FirstName, Employees.LastName
+   FROM Departments
+   LEFT JOIN Employees ON Departments.DeptID = Employees.DepartmentID;
+   ```
+
+3. **Right Join: Show All Employees and Their Department Names (Including Employees with No Department)**
+   ```sql
+   SELECT Employees.FirstName, Employees.LastName, Departments.DeptName
+   FROM Employees
+   RIGHT JOIN Departments ON Employees.DepartmentID = Departments.DeptID;
+   ```
+
+4. **Full Outer Join: List All Employees and Departments Including Unmatched Records**
+   ```sql
+   SELECT Employees.FirstName, Employees.LastName, Departments.DeptName
+   FROM Employees
+   FULL OUTER JOIN Departments ON Employees.DepartmentID = Departments.DeptID;
+   ```
+
+5. **Self Join: List Employee Names Alongside Their Colleagues in the Same Department**
+   ```sql
+   SELECT e1.FirstName AS Employee, e2.FirstName AS Colleague, e1.DepartmentID
+   FROM Employees e1
+   INNER JOIN Employees e2 ON e1.DepartmentID = e2.DepartmentID AND e1.EmpID <> e2.EmpID;
+   ```
+
+6. **Sub-Query: Select Employees Whose Salary Is Above the Average Salary**
+   ```sql
+   SELECT FirstName, LastName, Salary
+   FROM Employees
+   WHERE Salary > (SELECT AVG(Salary) FROM Employees);
+   ```
+
+7. **Sub-Query with IN Clause: Find Departments with Employees Having Salaries Above 60000**
+   ```sql
+   SELECT DeptName
+   FROM Departments
+   WHERE DeptID IN (SELECT DepartmentID FROM Employees WHERE Salary > 60000);
+   ```
+
+8. **Sub-Query with EXISTS: Display Departments Only If They Have Employees**
+   ```sql
+   SELECT DeptName
+   FROM Departments d
+   WHERE EXISTS (SELECT * FROM Employees e WHERE e.DepartmentID = d.DeptID);
+   ```
+
+9. **Create a View: Define a View to Display High-Earning Employees (Salary > 60000)**
+   ```sql
+   CREATE VIEW HighEarningEmployees AS
+   SELECT EmpID, FirstName, LastName, Salary
+   FROM Employees
+   WHERE Salary > 60000;
+   ```
+   - **Using the View**:
+     ```sql
+     SELECT * FROM HighEarningEmployees;
+     ```
+
+10. **Join with a View: Display Department Names Alongside High-Earning Employees**
+    ```sql
+    SELECT HighEarningEmployees.FirstName, HighEarningEmployees.LastName, Departments.DeptName
+    FROM HighEarningEmployees
+    JOIN Departments ON HighEarningEmployees.DepartmentID = Departments.DeptID;
+    ```
+
+---
+
+These queries should give a complete demonstration of joins, sub-queries, and views, covering various aspects of DML statements in SQL. Good luck with your practical exam!

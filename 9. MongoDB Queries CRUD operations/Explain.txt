@@ -1,0 +1,198 @@
+### **Prerequisites**:
+
+1. **NoSQL Databases**:
+   - **NoSQL** databases are non-relational databases that store and retrieve data in a format other than the tabular form used by relational databases.
+   - They are designed for flexibility, scalability, and performance for handling unstructured and semi-structured data.
+
+2. **MongoDB**:
+   - MongoDB is a popular **NoSQL** database that stores data in **JSON-like documents** (BSON - Binary JSON).
+   - It provides a flexible schema, meaning data structures can evolve over time.
+   - MongoDB is often used for applications requiring high scalability and performance, such as real-time analytics, content management, and large-scale web applications.
+
+3. **CRUD Operations**:
+   - **Create**: Insert new data into a collection.
+   - **Read**: Query the database to fetch data.
+   - **Update**: Modify existing data in a collection.
+   - **Delete**: Remove data from a collection.
+
+4. **MongoDB Query Methods**:
+   - **save()**: Used to insert or update documents in MongoDB. If a document with the specified `_id` exists, it will be updated; otherwise, a new document will be created.
+   - **find()**: Retrieves documents from a collection based on a query.
+   - **insert()**: Inserts new documents into a collection.
+   - **update()**: Modifies existing documents in a collection.
+   - **remove()**: Deletes documents from a collection.
+
+5. **Logical Operators**:
+   - MongoDB supports logical operators like `$and`, `$or`, `$nor`, `$not`, `$in`, `$nin`, etc., for more complex queries.
+
+---
+
+### **Objectives**:
+
+1. **Perform CRUD Operations**: Use MongoDB to execute basic CRUD operations (Create, Read, Update, Delete) on a collection.
+2. **Query Data**: Utilize MongoDB's powerful querying capabilities to find documents that match certain criteria.
+3. **Insert, Update, Delete Data**: Learn to insert new documents, update existing ones, and delete documents using MongoDB methods.
+4. **Work with Logical Operators**: Use logical operators to create more complex queries in MongoDB.
+
+---
+
+### **Detailed Theory Concepts**:
+
+1. **Creating Documents in MongoDB**:
+   - **save()**: Inserts a new document into the collection or updates an existing one if it already has the same `_id`.
+   
+   ```javascript
+   db.collection.save({
+       _id: 1,
+       name: "John",
+       age: 30,
+       city: "New York"
+   });
+   ```
+
+   - **insert()**: Specifically inserts a new document into the collection.
+
+   ```javascript
+   db.collection.insert({
+       name: "John",
+       age: 30,
+       city: "New York"
+   });
+   ```
+
+2. **Reading Documents (Find Query)**:
+   - **find()**: Retrieves documents based on the provided query. If no query is provided, it returns all documents.
+   
+   ```javascript
+   db.collection.find({name: "John"});
+   ```
+
+   - **findOne()**: Retrieves a single document matching the query. If no document matches, it returns `null`.
+
+   ```javascript
+   db.collection.findOne({name: "John"});
+   ```
+
+3. **Updating Documents**:
+   - **update()**: Updates documents in the collection. You can specify the fields to be modified using an update operator.
+   
+   ```javascript
+   db.collection.update(
+       { name: "John" },  // Query filter
+       { $set: { age: 31 } }  // Update operation
+   );
+   ```
+
+   - **$set**: Sets the value of a field in the document.
+   - **$inc**: Increments the value of a field.
+
+   ```javascript
+   db.collection.update(
+       { name: "John" },
+       { $inc: { age: 1 } }
+   );
+   ```
+
+4. **Deleting Documents**:
+   - **remove()**: Removes documents that match a given condition.
+
+   ```javascript
+   db.collection.remove({ name: "John" });
+   ```
+
+   - **deleteOne()**: Deletes a single document that matches the query.
+
+   ```javascript
+   db.collection.deleteOne({ name: "John" });
+   ```
+
+   - **deleteMany()**: Deletes all documents matching the query.
+
+   ```javascript
+   db.collection.deleteMany({ age: { $gt: 30 } });
+   ```
+
+5. **Logical Operators**:
+   MongoDB supports various logical operators for complex queries:
+   - **$and**: Matches documents that satisfy all conditions.
+   - **$or**: Matches documents that satisfy at least one of the conditions.
+   - **$not**: Inverts the effect of a query.
+   - **$in**: Matches documents where the value of a field is in the specified array.
+   - **$nin**: Matches documents where the value of a field is not in the specified array.
+   
+   **Example with $and and $or**:
+
+   ```javascript
+   // Match documents where the age is greater than 25 and the city is "New York"
+   db.collection.find({ $and: [{ age: { $gt: 25 } }, { city: "New York" }] });
+
+   // Match documents where the age is either 30 or 35
+   db.collection.find({ age: { $in: [30, 35] } });
+   ```
+
+---
+
+### **Example MongoDB Queries**:
+
+1. **Create a new document**:
+
+   ```javascript
+   db.users.insert({
+       name: "Alice",
+       age: 25,
+       city: "London"
+   });
+   ```
+
+2. **Read documents**:
+
+   - Find all documents where age is greater than 20:
+   
+   ```javascript
+   db.users.find({ age: { $gt: 20 } });
+   ```
+
+   - Find a single document by name:
+   
+   ```javascript
+   db.users.findOne({ name: "Alice" });
+   ```
+
+3. **Update a document**:
+
+   - Set the age of "Alice" to 26:
+   
+   ```javascript
+   db.users.update({ name: "Alice" }, { $set: { age: 26 } });
+   ```
+
+4. **Delete a document**:
+
+   - Remove a user with name "Alice":
+   
+   ```javascript
+   db.users.remove({ name: "Alice" });
+   ```
+
+5. **Using Logical Operators**:
+
+   - Find users whose age is either 30 or 25:
+   
+   ```javascript
+   db.users.find({ age: { $in: [30, 25] } });
+   ```
+
+   - Find users whose name is either "Alice" or "Bob":
+   
+   ```javascript
+   db.users.find({ $or: [{ name: "Alice" }, { name: "Bob" }] });
+   ```
+
+---
+
+### **Summary**:
+
+- **CRUD Operations in MongoDB** are essential for manipulating data stored in collections.
+- MongoDB provides simple methods to **create**, **read**, **update**, and **delete** data.
+- Logical operators like **$and**, **$or**, **$in**, and **$gt** allow for complex queries and are essential for real-world applications.
+- MongoDB's flexibility allows for dynamic and evolving data models, making it suitable for applications with rapidly changing requirements or large volumes of data.
